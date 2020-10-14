@@ -7,9 +7,7 @@ import uk.ac.ox.ctsu.arts.addressservice.exception.NotFoundException;
 import uk.ac.ox.ctsu.arts.addressservice.model.Address;
 import uk.ac.ox.ctsu.arts.addressservice.model.AddressRepository;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @RestController
@@ -22,13 +20,11 @@ public class AddressController {
 
     @GetMapping("/address/get/{id}")
     Address get(@PathVariable Long id) {
-        Address address = addressRepository.findById(id).orElseThrow(() -> new NotFoundException());
-
-        return address;
+        return addressRepository.findById(id).orElseThrow(() -> new NotFoundException());
     }
 
     @GetMapping("/addresses")
-    Page<Address> get(@RequestParam int page, @RequestParam int size) {
+    Page<Address> getPaged(@RequestParam int page, @RequestParam int size) {
         return addressRepository.findAll(PageRequest.of(page, size));
     }
 
