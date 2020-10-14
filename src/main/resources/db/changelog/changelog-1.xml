@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd   http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="markph (generated)" id="1">
+        <insert tableName="address">
+            <column name="id" valueSequenceNext="address_sequence"/>
+            <column name="line1" value="12 Test Data St."/>
+            <column name="line2" value="Teston-on-the-Test"/>
+            <column name="line3" value=""/>
+            <column name="line4" value=""/>
+            <column name="line5" value="Testshire"/>
+            <column name="postal_code" value="TE57 1NG"/>
+            <column name="postal_country" value="GB"/>
+            <column name="changed_who" value="mdp"/>
+            <column name="changed_when" value="now"/>
+        </insert>
+        <insert tableName="address">
+            <column name="id" valueSequenceNext="address_sequence"/>
+            <column name="line1" value="42 That St."/>
+            <column name="line2" value="Testsville"/>
+            <column name="line3" value=""/>
+            <column name="line4" value=""/>
+            <column name="line5" value="Validationshire"/>
+            <column name="postal_code" value="VA71 0NG"/>
+            <column name="postal_country" value="GB"/>
+            <column name="changed_who" value="mdp"/>
+            <column name="changed_when" value="now"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

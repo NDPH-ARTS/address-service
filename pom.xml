@@ -75,35 +75,5 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.liquibase</groupId>-->
-<!--                <artifactId>liquibase-maven-plugin</artifactId>-->
-<!--                <version>3.10.1</version>-->
-
-<!--                <configuration>-->
-<!--                    <changeLogFile>src/main/resources/d</changeLogFile>-->
-<!--                    <propertyFile>src/main/resources/liquibase.properties</propertyFile>-->
-<!--                    <outputChangeLogFile>myGenChangeLog.xml</outputChangeLogFile>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>process-resources</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>update</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-        </plugins>
-    </build>
-
 </project>

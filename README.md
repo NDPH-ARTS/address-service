@@ -1,6 +1,5 @@
 # address-service
-Provides CRUD operations 
-
+Provides CRUD operations for the Address entity
 
 The following properties are required:
 
@@ -12,3 +11,4 @@ The following properties are required:
 
 *e.g.*
 ```-Djdbc.driver=org.postgresql.Driver -Djdbc.url=jdbc:postgresql://localhost:5432/arts -Djdbc.username=postgres -Djdbc.password= -Dserver.port=8081```
+
