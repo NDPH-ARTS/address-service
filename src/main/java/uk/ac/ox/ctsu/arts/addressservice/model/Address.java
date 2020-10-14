@@ -5,14 +5,13 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
 @Audited
 public class Address {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_sequence")
     @Column
     private Long id;
 
