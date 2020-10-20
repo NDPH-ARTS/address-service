@@ -33,4 +33,4 @@ jobs:
       run: |
         az configure --defaults group=$GROUP
         az configure --defaults spring-cloud=$SERVICE_NAME
-        az spring-cloud app deploy -n address-service --jar-path ${{ github.workspace }}/address-service/target/address-service.jar
+        az spring-cloud app deploy -n address-service --jar-path ${{ github.workspace }}/target/address-service-0.0.1-SNAPSHOT.jar
