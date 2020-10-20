@@ -26,11 +26,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Install ASC AZ extension
-      run: az extension add --name spring-cloud
-
-    - name: Deploy with AZ CLI commands
+    # Maven deploy, make sure you have correct configurations in your pom.xml
+    - name: deploy to Azure Spring Cloud using Maven
       run: |
-        az configure --defaults group=$GROUP
-        az configure --defaults spring-cloud=$SERVICE_NAME
-        az spring-cloud app deploy -n address-service --jar-path ${{ github.workspace }}/target/address-service-0.0.1-SNAPSHOT.jar
+        mvn azure-spring-cloud:deploy
