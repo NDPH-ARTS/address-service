@@ -25,5 +25,5 @@ jobs:
     - uses: azure/webapps-deploy@v1
       with:
         app-name: address-service
-        publish-profile: ${{ secrets.<publish-profile> }}
+        publish-profile: ${{ secrets.AZUREWEBAPPPUBLISHPROFILE }}
         package: target/address-service-0.0.1-SNAPSHOT.jar  # Can also be a jar
