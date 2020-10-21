@@ -40,8 +40,8 @@ public class AddressController {
         return addressRepository.save(address);
     }
 
-    @GetMapping("/address/getsomething")
-    int getsomething() {
+    @GetMapping("/address/getsomethingelse")
+    int getsomethingelse() {
         return 1;
     }
 }
