@@ -39,4 +39,9 @@ public class AddressController {
     Address update(@RequestBody Address address) {
         return addressRepository.save(address);
     }
+
+    @GetMapping("/address/getsomething")
+    int getsomething() {
+        return 1;
+    }
 }
