@@ -32,7 +32,7 @@ class AddressControllerTest {
     @Test
     void getCallsRepository() {
         long id = 1;
-        when(addressRepository.findById(id)).thenReturn(Optional.of(new Address()));
+        when(addressRepository.findById(2l)).thenReturn(Optional.of(new Address()));
         addressController.get(id);
     }
 
