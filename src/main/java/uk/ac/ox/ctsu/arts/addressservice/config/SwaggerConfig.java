@@ -60,10 +60,11 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     private AuthorizationScope[] scopes() {
+        String scopePrefix = "api://"+CLIENT_ID+"/";
         AuthorizationScope[] scopes = {
-                new AuthorizationScope("read", "for read operations"),
-                new AuthorizationScope("write", "for write operations"),
-                new AuthorizationScope("foo", "Access foo API") };
+                new AuthorizationScope(scopePrefix+"read", "for read operations"),
+                new AuthorizationScope(scopePrefix+"write", "for write operations"),
+                new AuthorizationScope(scopePrefix+"foo", "Access foo API") };
         return scopes;
     }
 
