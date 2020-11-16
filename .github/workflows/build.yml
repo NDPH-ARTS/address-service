@@ -43,4 +43,4 @@ jobs:
           file: ./docker/Dockerfile
           push: true
           platforms: x86_64
-          tags: ghcr.io/ndph-arts/arts-admin:${{ github.sha }}
+          tags: ghcr.io/ndph-arts/address-service:${{ github.sha }}
