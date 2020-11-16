@@ -29,12 +29,12 @@ class AddressControllerTest {
         addressController = new AddressController(addressRepository);
     }
 
-//    @Test
-//    void getCallsRepository() {
-//        long id = 1;
-//        when(addressRepository.findById(2l)).thenReturn(Optional.of(new Address()));
-//        addressController.get(id);
-//    }
+    @Test
+    void getCallsRepository() {
+        long id = 1;
+        when(addressRepository.findById(id)).thenReturn(Optional.of(new Address()));
+        addressController.get(id);
+    }
 
     @Test
     void getPagedCallsRepository() {
