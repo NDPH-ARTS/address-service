@@ -1,25 +1,66 @@
 package uk.ac.ox.ctsu.arts.addressservice.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.*;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.SecurityConfiguration;
+import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 @Configuration
 public class SwaggerConfig implements WebMvcConfigurer {
+    @Value("${spring.security.oauth2.client.registration.azure.client-secret}")
+    private String CLIENT_SECRET;
+
+    @Value("${spring.security.oauth2.client.registration.azure.client-id}")
+    private String CLIENT_ID;
+
+    private static final String AUTH_SERVER = "https://login.microsoftonline.com/b12c22e0-fba5-4523-b4ed-19add925103a/oauth2/v2.0";
+    private List<AuthorizationScope> authorizationScopeList = new ArrayList();
+
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("uk.ac.ox.ctsu.arts.addressservice.controller"))
-                .paths(PathSelectors.any())
-                .build();
+        authorizationScopeList.add(new AuthorizationScope(CLIENT_ID + "/read", "read privilege"));
+        authorizationScopeList.add(new AuthorizationScope(CLIENT_ID + "/foo", "write/update"));
+
+        return new Docket(DocumentationType.SWAGGER_2).select().apis(
+            RequestHandlerSelectors.basePackage("uk.ac.ox.ctsu.arts.addressservice.controller"))
+                                                      .paths(PathSelectors.any()).build()
+                                                      .securitySchemes(asList(securityScheme()))
+                                                      .securityContexts(asList(securityContext()));
+    }
+
+    @Bean
+    public SecurityConfiguration security() {
+        return SecurityConfigurationBuilder.builder().clientId(CLIENT_ID).clientSecret(CLIENT_SECRET)
+                                           .scopeSeparator(" ").useBasicAuthenticationWithAccessCodeGrant(true).build();
+    }
+
+    private SecurityScheme securityScheme() {
+        TokenRequestEndpoint token = new TokenRequestEndpointBuilder().url(AUTH_SERVER + "/authorize").build();
+        TokenEndpoint authToken = new TokenEndpointBuilder().url(AUTH_SERVER + "/token").build();
+        GrantType grantType = new AuthorizationCodeGrant(token, authToken);
+
+        return new OAuthBuilder().grantTypes(asList(grantType)).scopes(authorizationScopeList).name("azure").build();
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                              .securityReferences(asList(new SecurityReference("azure", authorizationScopeList.toArray(new AuthorizationScope[] {}))))
+                              .build();
     }
 
     @Bean

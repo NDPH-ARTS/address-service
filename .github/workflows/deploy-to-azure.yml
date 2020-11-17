@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.registry_package.package.name == 'address-service'
+    #if: github.event.registry_package.package.name == 'address-service'
     steps:
       - uses: azure/webapps-deploy@v2
         with:
