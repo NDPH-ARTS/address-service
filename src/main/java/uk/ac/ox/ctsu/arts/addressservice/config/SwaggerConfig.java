@@ -28,7 +28,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     @Value("${spring.security.oauth2.client.registration.azure.client-id}")
     private String CLIENT_ID;
 
-    private static final String AUTH_SERVER = "https://login.microsoftonline.com/b12c22e0-fba5-4523-b4ed-19add925103a/oauth2/v2.0";
+    private static final String AUTH_SERVER = "https://login.microsoftonline.com/5bb8abc0-9dbd-4705-b679-23e3270bce26/oauth2/v2.0";
     private List<AuthorizationScope> authorizationScopeList = new ArrayList();
 
     @Bean
