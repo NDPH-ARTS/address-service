@@ -7,5 +7,6 @@
     <include file="db/changelog/changelog-initial-schema.xml"/>
 
     <!-- Insert some rough test data   -->
-    <include file="db/changelog/changelog-1.xml"/>
+    <include file="db/changelog/changelog-testdata.xml"/>
+
 </databaseChangeLog>

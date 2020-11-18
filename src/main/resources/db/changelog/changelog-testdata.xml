@@ -3,7 +3,8 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd   http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
-    <changeSet author="markph (generated)" id="1">
+    <property  name="serviceName"  value="address-service"/>
+    <changeSet author="markph" id="${serviceName}/1">
         <insert tableName="address">
             <column name="id" valueSequenceNext="address_sequence"/>
             <column name="line1" value="12 Test Data St."/>
