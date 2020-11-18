@@ -15,7 +15,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}  
       - uses: azure/webapps-deploy@v2
         with:
-          app-name: 'address-service'
+          app-name: 'address-service-arts'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           images: 'ghcr.io/I tndph-arts/address-service:${{ github.sha }}'
         
