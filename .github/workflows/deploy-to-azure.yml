@@ -10,9 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     #if: github.event.registry_package.package.name == 'address-service'
     steps:
+      - uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  
       - uses: azure/webapps-deploy@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
           app-name: 'address-service'
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           images: 'ghcr.io/I tndph-arts/address-service:${{ github.sha }}'
+        
+          
+    
