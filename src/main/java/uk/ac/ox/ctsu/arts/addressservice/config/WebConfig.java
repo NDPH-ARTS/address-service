@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.*;
 import springfox.documentation.service.*;
@@ -32,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${swagger.authserver.url}")
     private String AUTH_SERVER;
 
-    private List<AuthorizationScope> authorizationScopeList = new ArrayList();
+    private List<AuthorizationScope> authorizationScopeList = new ArrayList<>();
 
     @Bean
     public Docket api() {
@@ -50,11 +49,6 @@ public class WebConfig implements WebMvcConfigurer {
     public SecurityConfiguration security() {
         return SecurityConfigurationBuilder.builder().clientId(CLIENT_ID).clientSecret(CLIENT_SECRET)
                                            .scopeSeparator(" ").useBasicAuthenticationWithAccessCodeGrant(true).build();
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedMethods("PUT", "GET", "POST", "OPTIONS");
     }
 
     private SecurityScheme securityScheme() {
