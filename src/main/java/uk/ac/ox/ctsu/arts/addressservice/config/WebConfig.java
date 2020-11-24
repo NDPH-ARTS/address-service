@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.*;
 import springfox.documentation.service.*;
@@ -21,20 +22,22 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 @Configuration
-public class SwaggerConfig implements WebMvcConfigurer {
-    @Value("${spring.security.oauth2.client.registration.azure.client-secret}")
+public class WebConfig implements WebMvcConfigurer {
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
     private String CLIENT_SECRET;
 
-    @Value("${spring.security.oauth2.client.registration.azure.client-id}")
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
     private String CLIENT_ID;
 
-    private static final String AUTH_SERVER = "https://login.microsoftonline.com/b12c22e0-fba5-4523-b4ed-19add925103a/oauth2/v2.0";
+    @Value("${swagger.authserver.url}")
+    private String AUTH_SERVER;
+
     private List<AuthorizationScope> authorizationScopeList = new ArrayList();
 
     @Bean
     public Docket api() {
-        authorizationScopeList.add(new AuthorizationScope(CLIENT_ID + "/read", "read privilege"));
-        authorizationScopeList.add(new AuthorizationScope(CLIENT_ID + "/foo", "write/update"));
+        authorizationScopeList.add(new AuthorizationScope("api://address-service-arts/read", "read privilege"));
+        authorizationScopeList.add(new AuthorizationScope("api://address-service-arts/write", "write/update"));
 
         return new Docket(DocumentationType.SWAGGER_2).select().apis(
             RequestHandlerSelectors.basePackage("uk.ac.ox.ctsu.arts.addressservice.controller"))
@@ -49,6 +52,11 @@ public class SwaggerConfig implements WebMvcConfigurer {
                                            .scopeSeparator(" ").useBasicAuthenticationWithAccessCodeGrant(true).build();
     }
 
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedMethods("PUT", "GET", "POST", "OPTIONS");
+    }
+
     private SecurityScheme securityScheme() {
         TokenRequestEndpoint token = new TokenRequestEndpointBuilder().url(AUTH_SERVER + "/authorize").build();
         TokenEndpoint authToken = new TokenEndpointBuilder().url(AUTH_SERVER + "/token").build();
@@ -58,9 +66,8 @@ public class SwaggerConfig implements WebMvcConfigurer {
     }
 
     private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                              .securityReferences(asList(new SecurityReference("azure", authorizationScopeList.toArray(new AuthorizationScope[] {}))))
-                              .build();
+        return SecurityContext.builder().securityReferences(
+            asList(new SecurityReference("azure", authorizationScopeList.toArray(new AuthorizationScope[]{})))).build();
     }
 
     @Bean
@@ -76,7 +83,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
         config.addAllowedMethod("POST");
         config.addAllowedMethod("PUT");
         config.addAllowedMethod("DELETE");
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/address/**", config);
 
         return new CorsFilter(source);
     }

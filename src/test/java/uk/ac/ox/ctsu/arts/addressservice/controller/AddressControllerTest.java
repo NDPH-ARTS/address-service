@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.oauth2.jwt.Jwt;
 import uk.ac.ox.ctsu.arts.addressservice.exception.NotFoundException;
 import uk.ac.ox.ctsu.arts.addressservice.model.Address;
 import uk.ac.ox.ctsu.arts.addressservice.model.AddressRepository;
@@ -58,7 +59,7 @@ class AddressControllerTest {
     void createCallsRepository() {
         Address address = new Address();
         when(addressRepository.save(address)).thenReturn(address);
-        addressController.create(address);
+        addressController.create(address, mock(Jwt.class));
     }
 
     @Test
