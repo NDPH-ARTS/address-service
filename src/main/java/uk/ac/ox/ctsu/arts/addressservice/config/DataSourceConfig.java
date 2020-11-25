@@ -13,18 +13,12 @@ public class DataSourceConfig {
     private String driverClass;
     @Value( "${jdbc.url}" )
     private String url;
-    @Value( "${jdbc.username}" )
-    private String username;
-    @Value( "${jdbc.password}" )
-    private String password;
 
     @Bean
     public DataSource getDataSource() {
         return DataSourceBuilder.create()
             .driverClassName(driverClass)
             .url(url)
-            .username(username)
-            .password(password)
             .build();
     }
 }
