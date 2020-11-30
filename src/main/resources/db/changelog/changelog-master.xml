@@ -8,4 +8,7 @@
 
     <!-- Insert some rough test data   -->
     <include file="db/changelog/changelog-1.xml"/>
+
+    <include file="db/changelog/changelog-roles-schema.xml"/>
+    <include file="db/changelog/changelog-roles-dummydata.xml"/>
 </databaseChangeLog>
