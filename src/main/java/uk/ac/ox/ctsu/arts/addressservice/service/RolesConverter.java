@@ -15,9 +15,10 @@ import java.util.stream.Collectors;
 @Component
 public class RolesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
+    @Autowired
+    private RoleRepository roleRepository;
 
-
-    private String PERMISISON_PREFIX= "PERMISSION_";
+    private String PERMISSION_PREFIX= "PERMISSION_";
     private String ROLE_PREFIX= "ROLE_";
 
     @Override
@@ -28,13 +29,24 @@ public class RolesConverter implements Converter<Jwt, Collection<GrantedAuthorit
         if(rolesInToken!=null){
             List<String> roleClaims = (List) rolesInToken;
             authorities.addAll(roleClaims.stream().map(role -> new SimpleGrantedAuthority(ROLE_PREFIX + role.toUpperCase())).collect(Collectors.toList()));
-
+            authorities.addAll(getPermissionsForRoles(roleClaims));
         }
         return authorities;
 
         // TODO deal with scope claims too?  Spring's default behaviour is to turn 'read' into a GrantedAuthority called 'SCOPE_read' etc but we have overridde
     }
 
+    protected Collection<GrantedAuthority> getPermissionsForRoles(List<String> roleClaims){ // from DB.
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        for(String roleName : roleClaims){
+            Optional<Role> role = roleRepository.findById(roleName);
+
+            if(role.isPresent()){
+                authorities.addAll(role.get().getPermissions().stream().map(permission -> new SimpleGrantedAuthority(PERMISSION_PREFIX + permission.getName().toUpperCase())).collect(Collectors.toList()));
+            }
+        }
+        return authorities;
+    }
 
 
 }

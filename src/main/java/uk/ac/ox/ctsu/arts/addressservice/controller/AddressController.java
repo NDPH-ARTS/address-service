@@ -33,24 +33,24 @@ public class AddressController {
 
     @GetMapping("/get/{id}")
     Address get(
-        @PathVariable
-            Long id) {
+            @PathVariable
+                    Long id) {
         return addressRepository.findById(id).orElseThrow(() -> new NotFoundException());
     }
 
     @GetMapping("")
     Page<Address> getPaged(
-        @RequestParam
-            int page,
-        @RequestParam
-            int size) {
+            @RequestParam
+                    int page,
+            @RequestParam
+                    int size) {
         return addressRepository.findAll(PageRequest.of(page, size));
     }
 
     @PostMapping("/create")
     Address create(
-        @RequestBody
-            Address address, @AuthenticationPrincipal Jwt jwt) {
+            @RequestBody
+                    Address address, @AuthenticationPrincipal Jwt jwt) {
         address.setChangedWhen(LocalDateTime.now());
         address.setChangedWho(jwt.getClaimAsString("unique_name"));
         return addressRepository.save(address);
@@ -58,22 +58,21 @@ public class AddressController {
 
     @PostMapping("/update")
     Address update(
-        @RequestBody
-            Address address) {
+            @RequestBody
+                    Address address) {
         return addressRepository.save(address);
     }
 
     @GetMapping("/oidc-principal")
     public String getOidcUserPrincipal(@AuthenticationPrincipal Jwt jwt) {
-        return String.format("Hello, %s!", jwt.getClaimAsString("name"))+"\nToken claims: "+Arrays.toString(jwt.getClaims().entrySet().toArray())+"\nSpring authorities: "+Arrays.toString(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toArray());
+        return String.format("Hello, %s!", jwt.getClaimAsString("name")) + "\nToken claims: " + Arrays.toString(jwt.getClaims().entrySet().toArray()) + "\nSpring authorities: " + Arrays.toString(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toArray());
     }
 
 
-
-    @GetMapping("/secured-by-role-superuser")
-    @PreAuthorize("hasAuthority('ROLE_superuser')")
+    @GetMapping("/secured-by-role-foo")
+    @PreAuthorize("hasAuthority('ROLE_FOO')")
     public String getSecuredByRole() {
-        return "Success - secured by superuser role.";
+        return "Success - secured by role foo.";
 
     }
 
@@ -82,5 +81,11 @@ public class AddressController {
     public String getSecuredByBadRole() {
         return "How did we get through here?";
 
+    }
+
+    @GetMapping("/secured-by-permission-bar")
+    @PreAuthorize("hasAuthority('PERMISSION_BAR')")
+    public String getSecuredByPermission() {
+        return "Success - secured by permission bar";
     }
 }

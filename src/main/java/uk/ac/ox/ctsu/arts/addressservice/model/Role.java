@@ -19,7 +19,7 @@ public class Role {
     @Column
     private String id; // maps to Azure MIP role
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "roles_permissions",
             joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
