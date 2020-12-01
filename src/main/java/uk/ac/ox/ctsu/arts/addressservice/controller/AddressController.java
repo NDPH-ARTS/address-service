@@ -2,14 +2,24 @@ package uk.ac.ox.ctsu.arts.addressservice.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ox.ctsu.arts.addressservice.exception.NotFoundException;
 import uk.ac.ox.ctsu.arts.addressservice.model.Address;
 import uk.ac.ox.ctsu.arts.addressservice.model.AddressRepository;
 
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.logging.Logger;
 
 
 @RestController
@@ -55,6 +65,22 @@ public class AddressController {
 
     @GetMapping("/oidc-principal")
     public String getOidcUserPrincipal(@AuthenticationPrincipal Jwt jwt) {
-        return String.format("Hello, %s!", jwt.getClaimAsString("name"));
+        return String.format("Hello, %s!", jwt.getClaimAsString("name"))+"Token claims: "+Arrays.toString(jwt.getClaims().entrySet().toArray())+"Spring authorities: "+Arrays.toString(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toArray());
+    }
+
+
+
+    @GetMapping("/secured-by-role-superuser")
+    @PreAuthorize("hasAuthority('ROLE_superuser')")
+    public String getSecuredByRole() {
+        return "Success - secured by superuser role.";
+
+    }
+
+    @GetMapping("/secured-by-role-nonsense")
+    @PreAuthorize("hasAuthority('ROLE_no_such_role')")
+    public String getSecuredByBadRole() {
+        return "How did we get through here?";
+
     }
 }
