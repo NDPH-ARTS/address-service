@@ -65,7 +65,7 @@ public class AddressController {
 
     @GetMapping("/oidc-principal")
     public String getOidcUserPrincipal(@AuthenticationPrincipal Jwt jwt) {
-        return String.format("Hello, %s!", jwt.getClaimAsString("name"))+"Token claims: "+Arrays.toString(jwt.getClaims().entrySet().toArray())+"Spring authorities: "+Arrays.toString(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toArray());
+        return String.format("Hello, %s!", jwt.getClaimAsString("name"))+"\nToken claims: "+Arrays.toString(jwt.getClaims().entrySet().toArray())+"\nSpring authorities: "+Arrays.toString(SecurityContextHolder.getContext().getAuthentication().getAuthorities().toArray());
     }
 
 

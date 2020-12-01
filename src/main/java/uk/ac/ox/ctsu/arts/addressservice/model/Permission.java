@@ -37,7 +37,9 @@ public class Permission {
         this.name = name;
     }
     public Permission() {
-
+    }
+    public String getName(){
+        return this.name;
     }
 
     public void setName(String name) {

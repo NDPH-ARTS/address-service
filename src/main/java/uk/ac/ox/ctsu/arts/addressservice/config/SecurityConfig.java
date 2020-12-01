@@ -1,6 +1,7 @@
 package uk.ac.ox.ctsu.arts.addressservice.config;
 
 import net.minidev.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
@@ -13,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import uk.ac.ox.ctsu.arts.addressservice.service.RolesConverter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,31 +25,22 @@ import java.util.stream.Stream;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    @Autowired
+    private RolesConverter rolesConverter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
             .antMatchers(HttpMethod.OPTIONS, "/address").permitAll()
             .anyRequest().authenticated()
             .and().oauth2ResourceServer(oauth2 -> oauth2.jwt()
-                .jwtAuthenticationConverter(getCustomJwtAuthorisationConverter()));
+                .jwtAuthenticationConverter(getCustomJwtAuthConverter()));
     }
 
-    Converter<Jwt, AbstractAuthenticationToken> getCustomJwtAuthorisationConverter() {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-
-            if(jwt.getClaims().get("roles")!=null){
-                List<String> roleClaims = (List) jwt.getClaims().get("roles");
-                return roleClaims.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(Collectors.toList());
-            }else {
-                return new ArrayList<>();
-            }
-
-            // TODO deal with scope claims too?  Spring's default behaviour is to turn 'read' into a GrantedAuthority called 'SCOPE_read' etc but we have overridden
-            // TODO look up permission-role mappings (or find them in the token if we us aggregated claims?)
-
-
-        });
+    private Converter<Jwt, AbstractAuthenticationToken> getCustomJwtAuthConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter(); //Authentication
+        converter.setJwtGrantedAuthoritiesConverter(rolesConverter); //Authorisation
         return converter;
 
     }
