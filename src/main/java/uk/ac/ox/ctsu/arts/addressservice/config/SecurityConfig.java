@@ -1,33 +1,22 @@
 package uk.ac.ox.ctsu.arts.addressservice.config;
 
-import net.minidev.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
-import uk.ac.ox.ctsu.arts.addressservice.service.RolesConverter;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    private RolesConverter rolesConverter;
+    private AuthorisationConverter authorisationConverter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -40,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private Converter<Jwt, AbstractAuthenticationToken> getCustomJwtAuthConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter(); //Authentication
-        converter.setJwtGrantedAuthoritiesConverter(rolesConverter); //Authorisation
+        converter.setJwtGrantedAuthoritiesConverter(authorisationConverter); //Authorisation
         return converter;
 
     }

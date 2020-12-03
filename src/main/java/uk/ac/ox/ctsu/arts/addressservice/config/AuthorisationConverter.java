@@ -1,4 +1,4 @@
-package uk.ac.ox.ctsu.arts.addressservice.service;
+package uk.ac.ox.ctsu.arts.addressservice.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class RolesConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
+public class AuthorisationConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
 
     @Autowired
     private RoleRepository roleRepository;
