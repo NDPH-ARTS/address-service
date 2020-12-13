@@ -35,8 +35,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public Docket api() {
-        authorizationScopeList.add(new AuthorizationScope("api://address-service-arts/read", "read privilege"));
-        authorizationScopeList.add(new AuthorizationScope("api://address-service-arts/write", "write/update"));
+        authorizationScopeList.add(new AuthorizationScope("api://mts-apps/read", "read privilege"));
+        authorizationScopeList.add(new AuthorizationScope("api://mts-apps/write", "write/update"));
 
         return new Docket(DocumentationType.SWAGGER_2).select().apis(
             RequestHandlerSelectors.basePackage("uk.ac.ox.ctsu.arts.addressservice.controller"))
